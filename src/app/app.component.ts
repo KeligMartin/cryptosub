@@ -9,12 +9,23 @@ import {ContractService} from './service/contract.service';
 export class AppComponent {
   title = 'app';
 
-  constructor(private contractService: ContractService) {
-  }
+  constructor(private contractService: ContractService) {}
 
   connectAccount() {
     this.contractService.connectAccount().then(
-      x => console.log(x)
+      _ => console.log('Connected !')
     );
+  }
+
+  isConnected(): boolean {
+    return this.contractService.isConnected();
+  }
+
+  getSubscribe() {
+    this.contractService.getSubscribe().then(data => {
+      console.log('contract subscribe value -> ' + data.toString());
+    }).catch(err => {
+      console.log(err);
+    })
   }
 }
