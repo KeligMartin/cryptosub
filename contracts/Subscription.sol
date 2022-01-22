@@ -10,6 +10,21 @@ contract Subscription {
   }
 
   function subscribe() public pure returns (uint) {
-    return 1;
+    return tmp();
+  }
+
+  uint startTime;
+
+  function tmp() public view returns (uint) {
+    require(startTime != 0);
+    return (now - startTime) / 1 minutes;
+  }
+
+  function start() {
+    startTime = now;
+  }
+
+  function stop() {
+    startTime = 0;
   }
 }
