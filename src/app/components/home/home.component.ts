@@ -6,6 +6,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {DialogNewCarComponent} from './dialog/dialog-new-car/dialog-new-car.component';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 export interface DialogData {
   car: Car;
@@ -20,11 +21,11 @@ export class HomeComponent implements OnInit {
   displayedColumns: string[] = ['position', 'name', 'price', 'sold', 'buy'];
   dataSource: MatTableDataSource<Car> = new MatTableDataSource<Car>();
 
-  dialogCar: Car = new Car('', 0, false);
+  dialogCar: Car = new Car('', '0', false);
 
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(public router: Router, private contractService: ContractService, public dialog: MatDialog) {
+  constructor(public router: Router, private contractService: ContractService, public dialog: MatDialog, private _snackBar: MatSnackBar) {
     this.refreshDataSource();
   }
 
@@ -35,19 +36,21 @@ export class HomeComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
-  storeCar(name: string, price: number) {
-    this.contractService.storeCar(name, price).then(data => {
+  storeCar(name: string, price: number, owner: string) {
+    this.contractService.storeCar(name, price, owner).then(data => {
       console.log('contract storeCar result -> ' + data.toString());
       this.refreshDataSource();
+      this._snackBar.open('Car is up to sale.', 'OK');
     }).catch(err => {
       console.log(err);
     })
   }
 
-  buyCar(index: number) {
-    this.contractService.buyCar(index).then(data => {
+  buyCar(index: number, price: string) {
+    this.contractService.buyCar(index, price).then(data => {
       console.log('contract buyCar result -> ' + data.toString());
       this.refreshDataSource();
+      this._snackBar.open('Car bought.', 'OK');
     }).catch(err => {
       console.log(err);
     })
@@ -56,8 +59,8 @@ export class HomeComponent implements OnInit {
   refreshDataSource(): void {
     this.contractService.getCars().then(
       cars => {
+        console.log(cars);
         this.dataSource = new MatTableDataSource(cars);
-        this.dataSource.sort = this.sort;
       }
     )
   }
@@ -70,9 +73,9 @@ export class HomeComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      console.log(result);
       if(result !== undefined) {
-        this.storeCar(result.name, result.price)
+        // console.log(this.contractService.connectedAccount);
+        this.storeCar(result.name, result.price, this.contractService.connectedAccount)
       }
     });
   }

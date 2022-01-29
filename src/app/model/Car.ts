@@ -1,9 +1,9 @@
 export class Car {
   name: string;
   sold: boolean;
-  price: number;
+  price: string;
 
-  constructor(name: string, price: number, sold: boolean) {
+  constructor(name: string, price: string, sold: boolean) {
     this.name = name;
     this.price = price;
 

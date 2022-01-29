@@ -14,6 +14,8 @@ import {MatInputModule} from '@angular/material/input';
 import {FormsModule} from '@angular/forms';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatSortModule} from '@angular/material/sort';
+import {MatIconModule} from '@angular/material/icon';
+import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -22,18 +24,20 @@ import {MatSortModule} from '@angular/material/sort';
     HomeComponent,
     DialogNewCarComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatButtonModule,
-    MatTableModule,
-    MatDialogModule,
-    MatInputModule,
-    FormsModule,
-    MatToolbarModule,
-    MatSortModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatButtonModule,
+        MatTableModule,
+        MatDialogModule,
+        MatInputModule,
+        FormsModule,
+        MatToolbarModule,
+        MatSortModule,
+        MatIconModule,
+        MatSnackBarModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

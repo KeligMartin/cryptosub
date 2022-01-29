@@ -13,7 +13,7 @@
 
   <!-- Price Column -->
   <ng-container matColumnDef="price">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Price </th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Price (ETH)</th>
     <td mat-cell *matCellDef="let car"> {{car.price}} </td>
   </ng-container>
 
@@ -27,7 +27,7 @@
   <ng-container matColumnDef="buy">
     <th mat-header-cell *matHeaderCellDef> Action </th>
     <td mat-cell *matCellDef="let car; let i = index">
-      <button mat-raised-button color="warn" (click)="buyCar(i)" [disabled]="car.sold">Buy</button>
+      <button mat-raised-button color="warn" (click)="buyCar(i, car.price)" [disabled]="car.sold">Buy</button>
     </td>
   </ng-container>
 
@@ -37,4 +37,4 @@
 
 <br />
 
-<button mat-raised-button color="primary" (click)="openDialog()">Store a new car</button>
+<button mat-raised-button color="primary" (click)="openDialog()">Sell a car</button>

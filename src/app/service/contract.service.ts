@@ -17,7 +17,7 @@ export class ContractService {
   web3Modal
   private contract = contract(abi);
   private contractDeployed: any;
-  private connectedAccount: any;
+  connectedAccount: any;
 
   private accountStatusSource = new Subject<any>();
   accountStatus = this.accountStatusSource.asObservable();
@@ -65,7 +65,6 @@ export class ContractService {
 
   isConnected(): boolean {
     if(this.web3js == null || this.web3js.eth == null) {
-      console.log("web3js/eth null")
       return false;
     }
 
@@ -91,13 +90,8 @@ export class ContractService {
     return false;
   }
 
-  async getSubscribe(): Promise<number> {
-    const contractSubscription = await this.contractDeployed.subscribe();
-    return contractSubscription.toNumber();
-  }
-
-  async storeCar(carName: string, price: number): Promise<any> {
-    const result = await this.contractDeployed.storeCar(carName, price, {from:this.connectedAccount});
+  async storeCar(carName: string, price: number, owner: string): Promise<any> {
+    const result = await this.contractDeployed.storeCar(carName, price, owner, {from:this.connectedAccount});
     return result.toString();
   }
 
@@ -115,7 +109,12 @@ export class ContractService {
    return await this.contractDeployed.getCars();
   }
 
-  async buyCar(index: number): Promise<Car> {
-    return await this.contractDeployed.buyCar(index, {from:this.connectedAccount});
+  async buyCar(index: number, price: string): Promise<Car> {
+    return await this.contractDeployed.buyCar(
+      index,
+      {
+        from : this.connectedAccount, value: this.web3js.utils.toWei(price, 'Ether')
+      }
+    );
   }
 }
