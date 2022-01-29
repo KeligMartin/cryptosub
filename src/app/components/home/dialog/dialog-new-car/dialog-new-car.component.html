@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>Store a new car</h1>
+<div mat-dialog-content>
+  <p>Car information</p>
+
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Name</mat-label>
+    <input matInput [(ngModel)]="data.car.name">
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Price</mat-label>
+    <input type="number" [(ngModel)]="data.car.price" matInput>
+  </mat-form-field>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="data.car">Save</button>
+</div>

@@ -9,6 +9,8 @@ import {ContractService} from './service/contract.service';
 export class AppComponent {
   title = 'app';
 
+  private isUserLogged: boolean = false;
+
   constructor(private contractService: ContractService) {}
 
   connectAccount() {
@@ -24,6 +26,22 @@ export class AppComponent {
   getSubscribe() {
     this.contractService.getSubscribe().then(data => {
       console.log('contract subscribe value -> ' + data.toString());
+    }).catch(err => {
+      console.log(err);
+    })
+  }
+
+  storeCar() {
+    this.contractService.storeCar('Car1', 10000).then(data => {
+      console.log('contract storeCar result -> ' + data.toString());
+    }).catch(err => {
+      console.log(err);
+    })
+  }
+
+  getCar() {
+    this.contractService.getCar(0).then(data => {
+      console.log('contract getCar result -> ' + data.toString());
     }).catch(err => {
       console.log(err);
     })

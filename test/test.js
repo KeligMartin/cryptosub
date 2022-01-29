@@ -1,4 +1,4 @@
-const Subscription = artifacts.require('../contracts/Subscription.sol');
+const Subscription = artifacts.require('../contracts/Deal.sol');
 
 contract('Subscription', (accounts) => {
   var address = accounts[0]
