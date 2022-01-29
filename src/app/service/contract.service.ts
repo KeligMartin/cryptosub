@@ -3,7 +3,8 @@ import Web3 from "web3";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { Subject } from 'rxjs';
-const abi = require('/build/contracts/Subscription.json');
+import {Car} from '../model/Car';
+const abi = require('/build/contracts/Deal.json');
 const contract = require('truffle-contract');
 
 @Injectable({
@@ -16,6 +17,7 @@ export class ContractService {
   web3Modal
   private contract = contract(abi);
   private contractDeployed: any;
+  connectedAccount: any;
 
   private accountStatusSource = new Subject<any>();
   accountStatus = this.accountStatusSource.asObservable();
@@ -55,12 +57,19 @@ export class ContractService {
     this.contract.setProvider(this.provider);
     this.contractDeployed = await this.contract.deployed();
     // localStorage.setItem('accountAddress', this.accounts);
+
+    let accounts = await this.web3js.eth.getAccounts();
+    this.web3js.eth.connectedAccount = accounts[0]
+    this.connectedAccount = accounts[0]
   }
 
   isConnected(): boolean {
     if(this.web3js == null || this.web3js.eth == null) {
-      console.log("web3js/eth null")
       return false;
+    }
+
+    if(this.connectedAccount != null) {
+      return true;
     }
 
     this.web3js.eth.getAccounts((error: Error, accounts: string[]) => {
@@ -81,8 +90,31 @@ export class ContractService {
     return false;
   }
 
-  async getSubscribe(): Promise<number> {
-    const contractSubscription = await this.contractDeployed.subscribe();
-    return contractSubscription.toNumber();
+  async storeCar(carName: string, price: number, owner: string): Promise<any> {
+    const result = await this.contractDeployed.storeCar(carName, price, owner, {from:this.connectedAccount});
+    return result.toString();
+  }
+
+  async getCar(index: number): Promise<any> {
+    const result = await this.contractDeployed.getCar(index);
+    return result.toString();
+  }
+
+  async getCarNumber(): Promise<number> {
+    const result = await this.contractDeployed.getNumberOfCars();
+    return result.toNumber();
+  }
+
+  async getCars(): Promise<Car[]> {
+   return await this.contractDeployed.getCars();
+  }
+
+  async buyCar(index: number, price: string): Promise<Car> {
+    return await this.contractDeployed.buyCar(
+      index,
+      {
+        from : this.connectedAccount, value: this.web3js.utils.toWei(price, 'Ether')
+      }
+    );
   }
 }

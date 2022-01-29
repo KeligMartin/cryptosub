@@ -1,8 +1,17 @@
-<!--<p>Is connected : {{isConnected()}}</p>-->
-<!--<p>Result : {{getSubscribe()}}</p>-->
-
-<button mat-raised-button color="primary" (click)="connectAccount()">Connect to MetaMask / WalletConnect</button>
-<br/>
-<button mat-raised-button color="primary" (click)="isConnected()">Check connection</button>
-<br/>
-<button mat-raised-button color="primary" (click)="getSubscribe()">Get contract value</button>
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <title>BuyCar</title>
+  </head>
+  <body>
+    <mat-toolbar color="primary" class="navbar-height">
+      <span>BuyCar</span>
+      <span class="spacer"></span>
+      <button *ngIf="isConnected()" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+        <mat-icon (click)="disconnect()" disabled="">logout</mat-icon>
+      </button>
+    </mat-toolbar>
+    <router-outlet></router-outlet>
+  </body>
+</html>
